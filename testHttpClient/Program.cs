@@ -1,54 +1,28 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
+﻿using Microsoft.Extensions.DependencyInjection;
+using testHttpClient.Data;
+using testHttpClient.HttpClients;
+using testHttpClient.Model;
 
-class Program
+namespace testHttpClient;
+
+internal static class Program
 {
-    static readonly HttpClient client = new HttpClient();
-    private static string _token;
-
-    static async Task Main(string[] args)
+    private static async Task Main(string[] args)
     {
-        await RunAsync();
-     //   Console.WriteLine($"token - {_token}");
-    }
-
-    static async Task RunAsync()
-    {
-        client.BaseAddress = new Uri("http://45.144.64.179/");
-        client.DefaultRequestHeaders.Accept.Clear();
-        client.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/json"));
+        var serviceCollection = new ServiceCollection();
+        ConfigureService(serviceCollection);
+        var service = serviceCollection.BuildServiceProvider();
+        var todoClient = service.GetRequiredService<ITodoHttpClient>();
+        await todoClient.UserLogin(new UserLogin
+        {
+            email = "qweqwe@qwe.qwe",
+            password = "qweqweqwe"
+        });
         
-        try
-        {
-            var userLogin = new UserLogin { email = "qweqwe@qwe.qwe", password = "qweqweqwe" };
-            await LoginUserAsync(userLogin);
-            await GetTodos();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            throw;
-        }
-    }
+        Console.WriteLine("Token - " + TokenStorage.GetToken());
+        var responseTodos = await todoClient.GetTodosAsync();
 
-    static async Task LoginUserAsync(UserLogin userLogin)
-    {
-        var response = await client.PostAsJsonAsync(
-            "api/auth/login", userLogin);
-        response.EnsureSuccessStatusCode();
-
-        if (response.IsSuccessStatusCode)
-        {
-            _token = response.Content.ReadAsAsync<Token>().Result.access_token;
-        }
-    }
-
-    static async Task GetTodos()
-    {
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
-        var response = await client.GetFromJsonAsync<List<Todo>>("api/todos");
-        foreach (var value in response)
+        foreach (var value in responseTodos)
         {
             Console.WriteLine("/---------------------------------/");
             Console.WriteLine("Category - " + value.Category);
@@ -57,26 +31,12 @@ class Program
             Console.WriteLine("Date - " + value.Date);
         }
     }
-}
 
-
-public class UserLogin
-{
-    public string email { get; set; }
-    public string password { get; set; }
-}
-
-public class Token
-{
-    public string access_token { get; set; }
-}
-
-public class Todo
-{
-    public Guid Id { get; set; }
-    public string Category { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public long Date { get; set; }
-    public bool IsCompleted { get; set; }
+    private static void ConfigureService(ServiceCollection service)
+    {
+        service.AddHttpClient<ITodoHttpClient, TodoHttpClient>(options =>
+        {
+            options.BaseAddress = new Uri("http://45.144.64.179/");
+        });
+    }
 }

@@ -17,3 +17,10 @@
 /Users/admin/RiderProjects/testHttpClient/testHttpClient/bin/Debug/net6.0/Newtonsoft.Json.dll
 /Users/admin/RiderProjects/testHttpClient/testHttpClient/bin/Debug/net6.0/Newtonsoft.Json.Bson.dll
 /Users/admin/RiderProjects/testHttpClient/testHttpClient/obj/Debug/net6.0/testHttpClient.csproj.CopyComplete
+/Users/admin/RiderProjects/testHttpClient/testHttpClient/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/admin/RiderProjects/testHttpClient/testHttpClient/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/admin/RiderProjects/testHttpClient/testHttpClient/bin/Debug/net6.0/Microsoft.Extensions.Http.dll
+/Users/admin/RiderProjects/testHttpClient/testHttpClient/bin/Debug/net6.0/Microsoft.Extensions.Logging.dll
+/Users/admin/RiderProjects/testHttpClient/testHttpClient/bin/Debug/net6.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/admin/RiderProjects/testHttpClient/testHttpClient/bin/Debug/net6.0/Microsoft.Extensions.Options.dll
+/Users/admin/RiderProjects/testHttpClient/testHttpClient/bin/Debug/net6.0/Microsoft.Extensions.Primitives.dll
