@@ -19,7 +19,7 @@ internal static class Program
             password = "qweqweqwe"
         });
         
-        Console.WriteLine("Token - " + TokenStorage.GetToken());
+        Console.WriteLine("Token - " + TokenStorage.Value);
         var responseTodos = await todoClient.GetTodosAsync();
 
         foreach (var value in responseTodos)

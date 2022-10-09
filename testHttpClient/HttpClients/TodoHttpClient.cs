@@ -25,7 +25,7 @@ public class TodoHttpClient : ITodoHttpClient
     public async Task<List<Todo?>> GetTodosAsync()
     {
         _httpClient.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", TokenStorage.GetToken());
+            new AuthenticationHeaderValue("Bearer", TokenStorage.Value);
         return await _httpClient.GetFromJsonAsync<List<Todo>>(TodosUrl);
     }
 
@@ -35,7 +35,7 @@ public class TodoHttpClient : ITodoHttpClient
         response.EnsureSuccessStatusCode();
         if (response.IsSuccessStatusCode)
         {
-            TokenStorage.SetToken(response.Content.ReadAsAsync<Token>().Result.access_token);
+            TokenStorage.Value = response.Content.ReadAsAsync<Token>().Result.access_token;
         }
     }
 }
